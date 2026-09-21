@@ -22,7 +22,7 @@ export type NewReservationInput = {
   reservation_date: string;
   reservation_time: string;
   number_of_guests: number;
-  special_requests?: string | null;
+  special_requests?: string | null | undefined;
 };
 
 async function recordEmailError(id: string, message: string | null) {

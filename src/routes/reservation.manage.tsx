@@ -98,12 +98,12 @@ function ManageReservation() {
                 <Dt>Phone</Dt><dd><a href={`tel:${data.customer_phone}`} className="text-primary">{data.customer_phone}</a></dd>
                 <Dt>Email</Dt><dd className="break-all">{data.customer_email}</dd>
                 <Dt>Requests</Dt><dd>{data.special_requests || "—"}</dd>
-                <Dt>Status</Dt><dd className="font-semibold uppercase tracking-wider">{STATUS_LABEL[data.status]}</dd>
+                <Dt>Status</Dt><dd className="font-semibold uppercase tracking-wider">{STATUS_LABEL[data.status] ?? data.status}</dd>
               </dl>
 
               {data.status !== "pending" ? (
                 <p className="mt-6 rounded-md bg-muted px-4 py-3 text-sm">
-                  This reservation is already <strong>{STATUS_LABEL[data.status].toLowerCase()}</strong> and can no longer be changed from this link.
+                  This reservation is already <strong>{(STATUS_LABEL[data.status] ?? data.status).toLowerCase()}</strong> and can no longer be changed from this link.
                 </p>
               ) : (
                 <div className="mt-8 grid gap-3">

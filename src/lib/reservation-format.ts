@@ -11,8 +11,8 @@ export function formatReservationDate(isoDate: string) {
 
 /** "19:30:00" → "7:30 PM" */
 export function formatReservationTime(time: string) {
-  const [h, m] = time.split(":").map(Number);
-  if (Number.isNaN(h) || Number.isNaN(m)) return time;
+  const [h, m] = time.split(":").map(Number) as [number, number];
+  if (h === undefined || m === undefined || Number.isNaN(h) || Number.isNaN(m)) return time;
   const suffix = h >= 12 ? "PM" : "AM";
   const hour12 = h % 12 === 0 ? 12 : h % 12;
   return `${hour12}:${String(m).padStart(2, "0")} ${suffix}`;
