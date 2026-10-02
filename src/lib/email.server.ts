@@ -5,8 +5,8 @@
  *  - RESEND_API_KEY      injected when the Resend connector is linked
  *  - LOVABLE_API_KEY     injected automatically
  *  - RESTAURANT_EMAIL    where owner notifications go (default below)
- *  - EMAIL_FROM          the sender address. Defaults to Resend's shared test
- *                        sender "onboarding@resend.dev" (no domain required).
+ *  - EMAIL_FROM          the sender address. Defaults to the verified domain
+ *                        bookings@crowntreaty.com.
  */
 import { PUB } from "@/content/pub";
 
@@ -19,7 +19,7 @@ export function getRestaurantEmail() {
 }
 
 export function getFromAddress() {
-  const from = process.env["EMAIL_FROM"] || "onboarding@resend.dev";
+  const from = process.env["EMAIL_FROM"] || "bookings@crowntreaty.com";
   return `${PUB.name} <${from}>`;
 }
 
