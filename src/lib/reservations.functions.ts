@@ -54,6 +54,43 @@ export const submitReservation = createServerFn({ method: "POST" })
     return createReservation(data, siteOrigin());
   });
 
+/* ───────────── Public: big party enquiry (21–150 guests, email only) ───────────── */
+
+export const bigPartyEnquirySchema = z.object({
+  customer_name: z.string().trim().min(2, "Please enter your full name").max(80),
+  customer_email: z.string().trim().email("Please enter a valid email address").max(120),
+  customer_phone: z
+    .string()
+    .trim()
+    .min(7, "Please enter a valid phone number")
+    .max(20)
+    .regex(/^[+\d\s()-]+$/, "Please enter a valid phone number"),
+  event_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Please choose a date"),
+  number_of_guests: z.coerce
+    .number()
+    .int()
+    .min(RESERVATION.bigPartyMin, `Big party enquiries start at ${RESERVATION.bigPartyMin} guests`)
+    .max(RESERVATION.bigPartyMax, `For parties over ${RESERVATION.bigPartyMax}, please call us`),
+  message: z.string().trim().max(500, "Please keep your message under 500 characters").optional(),
+});
+
+export type BigPartyEnquiryValues = z.infer<typeof bigPartyEnquirySchema>;
+
+export const submitBigPartyEnquiry = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => {
+    const parsed = bigPartyEnquirySchema.parse(input);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (new Date(parsed.event_date + "T00:00:00") < today) {
+      throw new Error("Please choose today or a future date");
+    }
+    return parsed;
+  })
+  .handler(async ({ data }) => {
+    const { sendBigPartyEnquiry } = await import("@/lib/party-enquiry.server");
+    return sendBigPartyEnquiry(data);
+  });
+
 /* ───────────── Public: email-link landing (token-secured) ───────────── */
 
 const tokenSchema = z.object({ token: z.string().regex(/^[a-f0-9]{64}$/) });
