@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ReservationForm } from "@/components/reservation/ReservationForm";
+import { BigPartyForm } from "@/components/reservation/BigPartyForm";
+import { PartyChoice, type PartyMode } from "@/components/reservation/PartyChoice";
 import { Section, SiteLayout } from "@/components/site/SiteLayout";
 import { KITCHEN_HOURS, PUB } from "@/content/pub";
 import { pageHead } from "@/lib/seo";
@@ -16,6 +19,7 @@ export const Route = createFileRoute("/book")({
 });
 
 function Book() {
+  const [mode, setMode] = useState<PartyMode | null>(null);
   return (
     <SiteLayout>
       <Section>
@@ -37,7 +41,21 @@ function Book() {
             </div>
           </div>
           <div className="rounded-lg border border-border bg-card p-6 shadow-lift md:p-8">
-            <ReservationForm />
+            {mode === null ? (
+              <PartyChoice onChoose={setMode} />
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setMode(null)}
+                  className="mb-4 text-sm font-semibold text-primary hover:underline"
+                >
+                  ← Back to party size
+                </button>
+                <h2 className="mb-5 text-3xl">{mode === "big" ? "Big party enquiry" : "Book a table"}</h2>
+                {mode === "small" ? <ReservationForm /> : <BigPartyForm />}
+              </>
+            )}
           </div>
         </div>
       </Section>
