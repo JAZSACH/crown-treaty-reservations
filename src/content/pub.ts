@@ -110,12 +110,16 @@ export const EVENT_TYPES = [
 /** Reservation form options */
 export const RESERVATION = {
   minGuests: 1,
-  maxGuests: 12,
+  /** Small parties book a table directly (up to this many guests) */
+  maxGuests: 20,
+  /** Big parties send an enquiry instead of a table request */
+  bigPartyMin: 21,
+  bigPartyMax: 150,
   /** Bookable time slots (24h) */
   timeSlots: [
     "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
     "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
     "20:00", "20:30", "21:00",
   ],
-  largePartyNote: "For parties larger than 12, please call us or enquire about a private space.",
+  largePartyNote: "For parties larger than 20, please use the big party enquiry option.",
 };
